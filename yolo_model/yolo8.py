@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
 
-model = YOLO('yolo_model/best_of_the_best.pt')
+model = YOLO('yolo_model/best2.pt')
 
 
 def detect(image):

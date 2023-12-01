@@ -42,7 +42,7 @@ elif page == "Ветряные мельницы":
     st.header("Процесс обучения:")
     st.subheader("- Модель: *YOLOv8 Nano*")
     st.subheader("- Количество эпох обучения: *64*")
-    st.subheader("- mAP5: *ЧИСЛО*")
+    st.subheader("- mAP50: *~ 0.83*")
 
     st.info('Расширение картинки должно быть в формате .jpg /.jpeg /.png')
     image_url = st.text_input("Введите URL изображения")
@@ -56,12 +56,18 @@ elif page == "Ветряные мельницы":
             image.save(temp_image.name)
         st.subheader('Ваше фото до детекции:')
         st.image(image, caption='Original Image', use_column_width=True)
-        st.subheader('Предсказание модели:')
-        detection_result = detect(temp_image.name)
+
+        show_result_button1 = st.button("Показать результат", key="result_button_1")
+
+        if show_result_button1:
+            st.success("Ваш результат готов!")
+            st.subheader('Предсказание модели:')
+            detection_result = detect(temp_image.name)
     # Выведение второй картинки с нарисованными рамками
-        st.image(detection_result, caption='Image with Detection Result', use_column_width=True)
-        st.subheader(f'Время предсказания: {round((time.time() - start_time), 2)} сек.')
-        
+            st.image(detection_result, caption='Image with Detection Result', use_column_width=True)
+            st.subheader(f'Время предсказания: {round((time.time() - start_time), 2)} сек.')
+            st.header('🎈' * 10)
+
     uploaded_file = st.file_uploader("Загрузите изображение", type=["jpg", "jpeg", "png"])
     start_time_file = time.time()
     if uploaded_file is not None:
@@ -70,11 +76,16 @@ elif page == "Ветряные мельницы":
             uploaded_image.save(temp_image.name)
         st.subheader('Ваше фото до детекции:')
         st.image(uploaded_image, caption='Original Image', use_column_width=True)
-        st.subheader("Предсказание модели:")
-        prediction_result_file = detect(temp_image.name)
-        st.image(prediction_result_file, caption='Image with Detection Result', use_column_width=True)
-        st.subheader(f'Время предсказания: {round((time.time() - start_time_file), 2)} сек.')
-        st.header('🎈' * 10)
+
+        show_result_button2 = st.button("Показать результат", key="result_button_2")
+        if show_result_button2:
+            st.success("Ваш результат готов!")
+
+            st.subheader("Предсказание модели:")
+            prediction_result_file = detect(temp_image.name)
+            st.image(prediction_result_file, caption='Image with Detection Result', use_column_width=True)
+            st.subheader(f'Время предсказания: {round((time.time() - start_time_file), 2)} сек.')
+            st.header('🎈' * 10)
 
 
 elif page == "Текст":
@@ -94,9 +105,15 @@ elif page == "Текст":
         st.subheader('Ваше фото до обработки:')
         st.image(image2)
         prediction_result = predict_1(image2)
-        st.subheader("Ваше фото после обработки:")
-        st.image(prediction_result, channels='GRAY')
-        st.subheader(f'Время предсказания: {round((time.time() - start_time2), 2)} сек.')
+
+        show_result_button3 = st.button("Показать результат", key="result_button_3")
+        if show_result_button3:
+            st.success("Ваш результат готов!")
+
+            st.subheader("Ваше фото после обработки:")
+            st.image(prediction_result, channels='GRAY')
+            st.subheader(f'Время предсказания: {round((time.time() - start_time2), 2)} сек.')
+            st.header('🎈' * 10)
 
     uploaded_file = st.file_uploader("Загрузите изображение", type=["jpg", "jpeg", "png"])
     start_time_file = time.time()
@@ -106,10 +123,14 @@ elif page == "Текст":
         st.subheader('Ваше фото до обработки:')
         st.image(image_file)
         prediction_result_file = predict_1(image_file)
-        st.subheader("Ваше фото после обработки:")
-        st.image(prediction_result_file, channels='GRAY')
-        st.subheader(f'Время предсказания: {round((time.time() - start_time_file), 2)} сек.')
-        st.header('🎈' * 10)
+
+        show_result_button4 = st.button("Показать результат", key="result_button_4")
+        if show_result_button4:
+            st.success("Ваш результат готов!")
+            st.subheader("Ваше фото после обработки:")
+            st.image(prediction_result_file, channels='GRAY')
+            st.subheader(f'Время предсказания: {round((time.time() - start_time_file), 2)} сек.')
+            st.header('🎈' * 10)
 
 
 
@@ -130,35 +151,44 @@ elif page == "Итоги":
     image_5 = imageio.imread('pictures/plots.jpg')[:, :, :]
     st.image(image_5)
     st.subheader("Обучение")
-    image_6 = imageio.imread('pictures/train_batch0.jpg')[:, :, :]
+    image_6 = imageio.imread('pictures/train.png')[:, :, :]
     st.image(image_6)
 
     st.subheader("Confusion matrix")
-    image_7 = Image.open("pictures/confusion_matrix.png")
-    image_8 = Image.open("pictures/confusion_matrix_normalized.png")
 
-# Отображаем изображения в одной строке
-    st.image([image_7, image_8], caption=['Image 1 - Confusion matrix', 'Image 2 - Confusion matrix normalized '], width=300)
+    image_7 = imageio.imread("pictures/confusion_matrix.png")[:, :, :]
+    st.image(image_7)
+
+    st.subheader("Confusion matrix normolized")
+    
+    image_8 = imageio.imread('pictures/confusion_matrix_normalized.png')[:, :, :]
+    st.image(image_8)
+
+    st.subheader("Еще мы пробовали *YOLOv8 Medium* на 30 эпохах:")
+    st.markdown('YOLOv8 Medium')
+
+    image_9 = imageio.imread('pictures/pt1-3.png')[:, :, :]
+    st.image(image_9)
+
+    st.markdown('YOLOv8 Nano')
+    
+    image_10 = imageio.imread('pictures/pt1-2.png')[:, :, :]
+    st.image(image_10)
+
+    st.markdown('YOLOv8 Medium')
+
+    image_11 = imageio.imread('pictures/pt2-3.png')[:, :, :]
+    st.image(image_11)
+
+    st.markdown('YOLOv8 Nano')
+    
+    image_12 = imageio.imread('pictures/pt2-2.png')[:, :, :]
+    st.image(image_12)
+
 
     st.subheader('*Задача №2*: Очистка текста от зашумлений')
-    st.subheader("Точность предсказания")
-
-    
-
-    # image3 = imageio.imread('Acc2.jpg')[:, :, :]
-    # st.image(image3, caption="Caption")
-
-    # st.subheader("Loss на тренировочной и валидационной выборках")
-
-    # image4 = imageio.imread('loss2.jpg')[:, :, :]
-    # st.image(image4, caption="Caption")
-
-    # st.subheader('Так же мы пробовали: Модель resnet101')
-    # image5 = imageio.imread('101.jpg')[:, :, :]
-    # st.image(image5, caption="Caption")
-    # st.write('> **В процессе обучения на данных о различных видах птиц, очень быстро переобучилась, \
-    #             после чего пришлось остановить обучение. Связано это с тем, что модель не имеет ни \
-    #             одного Dropout слоя, а кол-во слоёв более 300. В выходном уровне классификации, \
-    #             был добавлен ещё один Fully Connecter слой, с 1028 входами и 200-ми выходами (количеством классов птиц).**')
-
-    # # РАССКАЗ О ТОМ, КАК НАМ БЫЛО ТЯЖЕЛО, НО МЫ СПРАВИЛИСЬ
+    st.subheader("Используемая модель:")
+    st.subheader("*criterion = nn.L1Loss()*")
+    st.subheader('*optimizer = torch.optim.SGD(model.parameters(), lr=0.005)")*')
+    image_9 = imageio.imread('pictures/model.png')[:, :, :]
+    st.image(image_9)
