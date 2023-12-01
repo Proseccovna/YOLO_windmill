@@ -6,11 +6,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
 
-
 model = YOLO('yolo_model/best_of_the_best.pt')
 
 
 def detect(image):
+
 
     img = Image.open(image).convert("RGB")
     img_array = np.array(img)

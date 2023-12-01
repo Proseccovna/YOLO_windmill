@@ -14,6 +14,7 @@ from yolo_model.yolo8 import detect
 import tempfile
 
 
+
 # st.set_page_config(layout='wide')
 
 st.title('Компьютерное зрение • Computer Vision')
