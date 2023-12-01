@@ -3,7 +3,8 @@ import torch
 import PIL
 import os
 import matplotlib.pyplot as plt
-import cv2
+import numpy as np
+from PIL import Image
 
 
 model = YOLO('yolo_model/best_of_the_best.pt')
@@ -11,11 +12,14 @@ model = YOLO('yolo_model/best_of_the_best.pt')
 
 def detect(image):
 
-    img = cv2.imread(image) 
-    detect_result = model(img)
+    img = Image.open(image).convert("RGB")
+    img_array = np.array(img)
+    detect_result = model(img_array)
     detect_img = detect_result[0].plot()
-    detect_img = cv2.cvtColor(detect_img, cv2.COLOR_BGR2RGB)
+    detect_img = Image.fromarray(detect_img)
 
     return detect_img
+
+
 
     
